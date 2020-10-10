@@ -18,6 +18,7 @@ df
 
 # Importing a dataframe
 df2 = pd.read_csv('/home/nabeel/Git/Programming-Basics/Python/ComputerSales.csv')
+df2 = df2.set_index('Sale ID')
 df2
 
 
@@ -77,11 +78,51 @@ df2[df2['Sex'] == 'F']
 df2[df2['Contact'].isin(['Doug Johnson', 'Ed Klondike'])]
 
 
+# descriptive statistics
+df.mean()
+df.mean(axis = 1) #row mean
+
+df2['Age'].shift(2)  # shifts the columns and then fill the empty shifts with NaN
+df = df.shift(2)
+df
+
+# dropping NaN
+df.dropna()
+
+# is there NaN
+df.isna()
+
+# filling na
+df.fillna(value = 0)
+
+# apply function
+df.apply(np.cumsum)
+df.apply(lambda x:x.max() - x.min())
 
 
+# Histogramming
+df2['Contact'].value_counts()
+
+# merging dataframe piecess
+pieces = [df[10:20], df[40:50], df[60:70]]
+pd.concat(pieces)
 
 
+# merging two df
+right = pd.DataFrame({'key': ['a', 'b', 'c'], 'lvalue': [35, 56, 80]})
+left = pd.DataFrame({'key': ['a', 'b', 'c'], 'rvalue': [32, 46, 70]})
+pd.merge(left, right, on = 'key')
 
+# grouping
+
+df2.groupby('Sex').mean()
+df2.groupby('Contact').sum().loc[:,'Profit'].sort_values()
+df2.groupby(['Sex','Contact']).sum().loc[:,'Profit'].sort_values()
+
+# pivot tables
+df3 = df2.loc[:,['Product Type', 'Lead', 'Sex', 'Sale Price', 'Profit']]
+df3
+pd.pivot_table(df3, values = 'Profit', index = ['Product Type', 'Lead'], columns = ['Sex'])
 
 
 
